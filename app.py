@@ -40,5 +40,10 @@ def delete():
         return jsonify({"result": "Info deleted."})
     return jsonify({"result": "Key not found."})
 
+@app.route('/list_keys', methods=['GET'])
+def list_keys():
+    keys = list(knowledge_base.keys())
+    return jsonify({"keys": keys})
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=10000)
