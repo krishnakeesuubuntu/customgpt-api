@@ -42,8 +42,12 @@ def delete():
 
 @app.route('/list_keys', methods=['GET'])
 def list_keys():
-    keys = list(knowledge_base.keys())
-    return jsonify({"keys": keys})
-
+    try:
+        keys = list(data_store.keys())  # ✅ Correct reference
+        return jsonify({"keys": keys}), 200
+    except Exception as e:
+        print(f"Error: {e}")
+        return jsonify({"error": "Failed to retrieve keys"}), 500
+        
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=10000)
