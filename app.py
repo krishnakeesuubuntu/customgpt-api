@@ -1,12 +1,19 @@
 from flask import Flask, request, jsonify
 
 app = Flask(__name__)
-data_store = {}  # in-memory storage
+
+# In-memory key-value storage
+data_store = {}
 
 @app.route("/fetch", methods=["POST"])
 def fetch():
     key = request.json.get("key")
     value = data_store.get(key, "No info found.")
+
+    # Truncate if the response is too large
+    if isinstance(value, str) and len(value) > 1000:
+        value = value[:1000] + " ... [truncated]"
+
     return jsonify({"result": value})
 
 @app.route("/add", methods=["POST"])
